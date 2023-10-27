@@ -1,0 +1,18 @@
+name: commitlint
+description: Checks commit messages for compliance with the conventional commit standard
+runs:
+  using: composite
+  steps:
+    - name: Check for commitlint config file
+      # description: Checks if the commitlint.config.cjs file is not present in the PR, add it.
+      run: |
+        if [ ! -f commitlint.config.* ]; then
+          curl -o commitlint.config.cjs https://raw.githubusercontent.com/fossnsbm/github-actions/main/commitlint.config.ts
+        fi
+      shell: bash
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Run commitlint
+      uses: wagoid/commitlint-github-action@v5
